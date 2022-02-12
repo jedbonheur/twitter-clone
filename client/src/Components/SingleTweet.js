@@ -12,7 +12,6 @@ const SingleTweet = ({data}) => {
 
   const goToprofileHandler = () => {
     const entry = locatation.pathname.split('/')[1]
-    console.log('entry',entry)
     if(entry ==='profile'){
       history.push(`/profiler/${data.author.handle}`)
     }else {
