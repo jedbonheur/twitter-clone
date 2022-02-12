@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import styled from 'styled-components';
 import {FeedContext} from '../Contexts/FeedContext'
 import {CurrentUserContext} from '../Contexts/CurrentUserContext'
@@ -10,8 +10,21 @@ const PostTweet = () => {
 const history = useHistory()
 const {currentUser} = useContext(CurrentUserContext);
 const {updateFeeds ,setUpdateFeeds} = useContext(FeedContext);
+const [character, setCharacter] = useState(280);
+
+const limitCharacter = (e) => {
+    e.preventDefault();
+    const count = e.target.value.length;
+    const meow = document.getElementById("meow")
+    if (count > 280) {
+        meow.disabled = true
+    }else {
+        meow.disabled = false
+    }
+    setCharacter(280 - count)
+}
+
 const tweetHandler = (e) => {
-   
    const payload = {
     status : e.target[0].value
    }
@@ -45,13 +58,17 @@ if(!currentUser) {
         </div>
         <div className="tweetPost">
             <form onSubmit={tweetHandler}>
-              <textarea rows = "10" cols = "10" name ="tweet"
+              <textarea onChange={limitCharacter} rows = "10" cols = "10" name ="tweet"
               placeholder="What's happening?"
               >
               </textarea>
           <div className="tweetAction">
-              <span>280</span>
-              <button type="submit" value="Submit">Meow</button>
+              <span 
+              className={
+                  character <= 55  &&  character > 0 ? 'yellow' : 
+                  character < 0 ? 'red' : ''
+              }>{character}</span>
+              <button type="submit" id="meow" value="Submit">Meow</button>
           </div>
             </form>
         </div>
@@ -85,6 +102,12 @@ const PostWrapper = styled.section`
    textarea:focus-visible {
     outline: none;
    }
+   .yellow {
+       color : #ffae11
+   }
+   .red {
+       color : red
+   }
    button {
     padding: 10px 20px;
     border-radius: 20px;
@@ -97,6 +120,9 @@ const PostWrapper = styled.section`
    button:hover {
     background: #4C00FF;
     cursor: pointer;
+   }
+   button:disabled {
+        background: #cacaca;
    }
   .tweetAction {
     display: flex;
