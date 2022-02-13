@@ -15,8 +15,11 @@ export default createGlobalStyle `
         font-size: 17px;
     font-weight: bolder;
     margin: 5px 0px;
+ 
+  @media screen and (max-width: 768px) {
+        font-size: 13px;
+        }
   }
-
 
 `;
  

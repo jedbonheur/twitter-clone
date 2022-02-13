@@ -106,6 +106,9 @@ const FeedsWrapper = styled.section`
         align-items: center;
         gap: 10px 5px;
     }
+    @media screen and (max-width: 768px) {
+              font-size: 12px;
+    }
     .handle , .point, .time  {
       color : #7e7e7e;
       display: relative

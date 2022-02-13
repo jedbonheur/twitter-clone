@@ -12,11 +12,16 @@ const {currentUser} = useContext(CurrentUserContext);
 const {updateFeeds ,setUpdateFeeds} = useContext(FeedContext);
 const [character, setCharacter] = useState(280);
 
-const limitCharacter = (e) => {
+const postValidation = (e) => {
     e.preventDefault();
     const count = e.target.value.length;
     const meow = document.getElementById("meow")
-    if (count > 280) {
+    if(count > 0) {
+        meow.style.background = "#4C00FF" 
+    }else {
+        meow.style.background = "" 
+    }
+    if (count > 280 || count < 1) {
         meow.disabled = true
     }else {
         meow.disabled = false
@@ -25,10 +30,10 @@ const limitCharacter = (e) => {
 }
 
 const tweetHandler = (e) => {
+    e.preventDefault();
    const payload = {
     status : e.target[0].value
    }
-   e.preventDefault();
    const requestOptions = {
     method: 'POST',
     headers: { "Content-Type": "application/json"},
@@ -58,18 +63,20 @@ if(!currentUser) {
         </div>
         <div className="tweetPost">
             <form onSubmit={tweetHandler}>
-              <textarea onChange={limitCharacter} rows = "10" cols = "10" name ="tweet"
+              <textarea onChange={postValidation} rows = "10" cols = "10" name ="tweet"
               placeholder="What's happening?"
               >
               </textarea>
-          <div className="tweetAction">
-              <span 
-              className={
-                  character <= 55  &&  character > 0 ? 'yellow' : 
-                  character < 0 ? 'red' : ''
-              }>{character}</span>
-              <button type="submit" id="meow" value="Submit">Meow</button>
-          </div>
+             <div className="tweetAction">
+                    <span 
+                    className={
+                        character <= 55  &&  character > 0 ? 'yellow' : 
+                        character < 0 ? 'red' : ''
+                    }>
+                    {character}
+                    </span>
+                    <button disabled  type="submit" id="meow" value="Submit">Meow</button>
+            </div>
             </form>
         </div>
   </PostWrapper>
@@ -123,6 +130,7 @@ const PostWrapper = styled.section`
    }
    button:disabled {
         background: #cacaca;
+        cursor: not-allowed;
    }
   .tweetAction {
     display: flex;
